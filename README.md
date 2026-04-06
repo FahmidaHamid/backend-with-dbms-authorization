@@ -89,7 +89,7 @@ mongodb+srv://username:password@cluster.mongodb.net/myDatabase
 
 - Choose your connection method: (I usually do "Drivers")
 
-- I run the following command on my terminal (VS Code, where I wrote my backend server)
+- I run the following command on your terminal (VS Code, where you wrote the backend server last Friday)
 
   ```javascript
   npm install mongodb
@@ -98,11 +98,33 @@ mongodb+srv://username:password@cluster.mongodb.net/myDatabase
 - Then I will copy the code sample inside my `index.js` file (the one we wrote in last class). Note that `<db_username>` and `<db_password>` should be replaced with your username and password you created for the admin user during configuration.
 - You should later hide these sensitive information by putting them in .env files.
 
+## What does my `index.js` file look like?
+
 ```javascript
+const express = require("express");
+
+const cors = require("cors"); // npm i cors
+// Cross-Origin Resource Sharing (CORS). // cors: It allows or restricts web browsers from requesting resources (API data) from your server on behalf of a different domain (origin)
+
+const app = express();
+
+app.use(express.json());
+// built-in middleware, json(): to parse the body of requests with a JSON payload
+
+app.use(cors());
+
+// this is the same 'validations.js' file we wrote in last class
+
+const { validateCourse } = require("./utilities/validations");
+
+const { ObjectId } = require("mongodb");
+//will import ObjectId and related functions
+
+const port = process.env.PORT || 3005; //just some port
+
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const uri =
-  "mongodb+srv://<db_username>:<db_password>@cluster0.0laypje.mongodb.net/?appName=Cluster0";
-
+  "mongodb+srv://<username>:<password>@cluster0.0laypje.mongodb.net/?appName=Cluster0";
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
@@ -114,17 +136,127 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
-    // Send a ping to confirm a successful connection
+
+    const db = client.db("basicBackendDBSpr2026"); // name of my database
+    const courseCollection = db.collection("coursesSpr2026");
+    //name of my collection
+
+    app.get("/api/courses", async (req, res) => {
+      try {
+        let results = await courseCollection.find({}).toArray();
+        res.send(results).status(200);
+      } catch (err) {
+        res.status(500).json({ message: err.message });
+      }
+    });
+
+    app.get("/api/courses/:id", async (req, res) => {
+      const id = req.params.id;
+
+      if (!ObjectId.isValid(id)) {
+        return res.status(400).json({ error: "Invalid ID format provided." });
+      }
+
+      const query = { _id: new ObjectId(id) };
+
+      try {
+        let result = await courseCollection.findOne(query);
+        if (!result) {
+          return res
+            .status(404)
+            .json({ error: "No data found with the provided ID." });
+        }
+
+        res.send(result).status(200);
+      } catch (err) {
+        res.status(500).json({ message: err.message });
+      }
+    });
+
+    app.post("/api/courses", async (req, res) => {
+      const userInput = {
+        coursename: req.body.coursename,
+        enrollment: req.body.enrollment,
+      };
+      const { error, value } = validateCourse(userInput);
+      if (error) {
+        return res.status(400).send(error.message);
+      } else {
+        const newCourse = {
+          coursename: userInput.coursename,
+          enrollment: userInput.enrollment,
+        };
+
+        const result = await courseCollection.insertOne(newCourse);
+        return res.send(result); //convention
+      }
+    });
+
+    app.delete("/api/courses/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await courseCollection.deleteOne(query);
+      res.send(result);
+    });
+
+    app.patch("/api/courses/:id", async (req, res) => {
+      const id = req.params.id;
+      const updatedCourse = {
+        coursename: req.body.coursename,
+        enrollment: req.body.enrollment,
+      };
+
+      const query = { _id: new ObjectId(id) };
+      const update = {
+        $set: {
+          coursename: updatedCourse.coursename,
+          enrollment: updatedCourse.enrollment,
+        },
+      };
+
+      const result = await courseCollection.updateOne(query, update);
+      res.send(result);
+    });
+
     await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!",
     );
   } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
   }
 }
-run().catch(console.dir);
+run().catch(console.dir); //run () will run until your server is terminated/down
+
+app.listen(port, () => {
+  console.log(`Listening to port: ${port}`);
+});
 ```
+
+- If you have configured your MongoDB account and the cluster properly, a similar code should work.
+
+- BTW, I used Google AI to generate some fake data for my `coursesSpr2026` collection. (We don't need to provide the ids, MongoDB will create them and )
+
+- Sample data in my collection:
+
+```javascript
+{
+  "_id": {
+    "$oid": "69d2d774fea6f1cf15ce932f"
+  },
+  "coursename": "Introduction to Psychology",
+  "enrollment": 450
+}
+```
+
+- Once the code runs, you may use POSTMAN to test the API ends (get, post, put, delete) and check if the database (your collection on MongoDB) is updated accordingly or not.
+
+- You may ask the AI to populate fake data (JSON array) for your project (given you specify the field names) and then drop them in your MongoDB.
+
+- You will have to learn/familiarize yourself with the MongoDB specific functions (like, find, findOne, insert, insertOne, etc.)
+
+- Here is a good source:
+
+- https://www.mongodb.com/docs/manual/core/databases-and-collections/
+
+- Google and ChatGPT are also helpful if we can ask the question properly/unambiguously.
