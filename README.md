@@ -56,3 +56,71 @@ mongodb+srv://username:password@cluster.mongodb.net/myDatabase
   - MongoDB Atlas = our cloud database
 
 - So Atlas replaces the local JSON array or local database file, but we still build the backend yourself in Express.
+
+# How to Use MongoDB
+
+### 1) Register for a MongoDB Atlas Account
+
+- Go to `https://cloud.mongodb.com/`
+- Navigate to the MongoDB Atlas registration page.
+- Sign up using your email address, or use your Google/GitHub account.
+- Accept the Terms of Service and Privacy Policy.
+
+### 2) Create a Free Cluster (M0)
+
+- We will stick to the free tier. Once logged in, select the "Shared Tier" option (M0), which is free forever for small projects.
+  - Choose a cloud provider (AWS, Google Cloud, or Azure) and a region close to you.
+  - Name your cluster (e.g., "Cluster0") and click "Create Deployment".
+
+### 3) Configure Database Security
+
+    - You will find **Security** [on the LeftSide Bar], click "Security QuickStart" and do the followings:
+      - **Create a Database User:** (How would you like to authenticate your connection?)
+        - Choose UserName and Password, provide the information, also save it in a local file (in case you forget), Choose "admin" role for the user.
+        - Remember: You will be able to create more users later.
+
+      - **Configure IP Access List:** (Where would you like to connect from?)
+        - Under the "Network Access" tab, click "Add IP Address". Click "Allow Access From Anywhere" (0.0.0.0/0) for ease of use, or select "Add Current IP Address" to only allow your current location.
+        - Or, Choose "MyLocal Environment"
+
+### 4) Connect to Your Cluster
+
+- Navigate to the "Database" tab and click the "Connect" button on your cluster.
+- Choose your connection method: (I usually do "Drivers")
+- I run the following command on my terminal (VS Code, where I wrote my backend server)
+  ```javascript
+  npm install mongodb
+  ```
+- Then I will copy the code sample inside my `index.js` file (the one we wrote in last class). Note that `<db_username>` and `<db_password>` should be replaced with your username and password you created for the admin user during configuration.
+- You should later hide these sensitive information by putting them in .env files.
+
+```javascript
+const { MongoClient, ServerApiVersion } = require("mongodb");
+const uri =
+  "mongodb+srv://<db_username>:<db_password>@cluster0.0laypje.mongodb.net/?appName=Cluster0";
+
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  },
+});
+
+async function run() {
+  try {
+    // Connect the client to the server	(optional starting in v4.7)
+    await client.connect();
+    // Send a ping to confirm a successful connection
+    await client.db("admin").command({ ping: 1 });
+    console.log(
+      "Pinged your deployment. You successfully connected to MongoDB!",
+    );
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+run().catch(console.dir);
+```
