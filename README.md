@@ -74,23 +74,27 @@ mongodb+srv://username:password@cluster.mongodb.net/myDatabase
 
 ### 3) Configure Database Security
 
-    - You will find **Security** [on the LeftSide Bar], click "Security QuickStart" and do the followings:
-      - **Create a Database User:** (How would you like to authenticate your connection?)
-        - Choose UserName and Password, provide the information, also save it in a local file (in case you forget), Choose "admin" role for the user.
-        - Remember: You will be able to create more users later.
+- You will find **Security** [on the LeftSide Bar], click "Security QuickStart" and do the followings:
+  - **Create a Database User:** (How would you like to authenticate your connection?)
+    - Choose UserName and Password, provide the information, also save it in a local file (in case you forget), Choose "admin" role for the user.
+    - Remember: You will be able to create more users later.
 
-      - **Configure IP Access List:** (Where would you like to connect from?)
-        - Under the "Network Access" tab, click "Add IP Address". Click "Allow Access From Anywhere" (0.0.0.0/0) for ease of use, or select "Add Current IP Address" to only allow your current location.
-        - Or, Choose "MyLocal Environment"
+  - **Configure IP Access List:** (Where would you like to connect from?)
+    - Under the "Network Access" tab, click "Add IP Address". Click "Allow Access From Anywhere" (0.0.0.0/0) for ease of use, or select "Add Current IP Address" to only allow your current location.
+    - Or, Choose "MyLocal Environment"
 
 ### 4) Connect to Your Cluster
 
 - Navigate to the "Database" tab and click the "Connect" button on your cluster.
+
 - Choose your connection method: (I usually do "Drivers")
+
 - I run the following command on my terminal (VS Code, where I wrote my backend server)
+
   ```javascript
   npm install mongodb
   ```
+
 - Then I will copy the code sample inside my `index.js` file (the one we wrote in last class). Note that `<db_username>` and `<db_password>` should be replaced with your username and password you created for the admin user during configuration.
 - You should later hide these sensitive information by putting them in .env files.
 
