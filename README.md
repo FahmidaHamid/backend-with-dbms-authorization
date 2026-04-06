@@ -247,7 +247,7 @@ app.listen(port, () => {
 
 - If you have configured your MongoDB account and the cluster properly, a similar code should work.
 
-- BTW, I used Google AI to generate some fake data for my `coursesSpr2026` collection. (We don't need to provide the ids, MongoDB will create them and )
+- BTW, I used Google AI to generate some fake data for my `coursesSpr2026` collection. (We don't need to provide the ids, MongoDB will create them.)
 
 - Sample data in my collection:
 
@@ -272,3 +272,11 @@ app.listen(port, () => {
 - https://www.mongodb.com/docs/manual/core/databases-and-collections/
 
 - Google and ChatGPT are also helpful if we can ask the question properly/unambiguously.
+
+- ** I Hope this helps you one step forward towards Project 02.**
+- Note:
+  - We will be following more-or-less an MVC (Model-View-Controller) style for the project:
+    - Model (mostly, Database <MongoDB and Mongoose>)
+    - View (Frontend <React>)
+    - Controller (Backend Logic <NodeJS, Express>)
+- You may also call it a MERN (MongoDB, Express, React, Node.js) stack
