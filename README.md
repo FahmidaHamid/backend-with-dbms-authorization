@@ -43,7 +43,7 @@
   - MongoDB = the database software itself
   - MongoDB Atlas = an online service that runs MongoDB for us
 
-- For our Node.js/Express CRUD server, Atlas is usually the easiest choice because we can create a free database online and connect our app to it with a connection string like:
+- For our **Node.js/Express CRUD server**, Atlas is usually the easiest choice because we can create a free database online and connect our app to it with a connection string like:
 
 ```javascript
 mongodb+srv://username:password@cluster.mongodb.net/myDatabase
