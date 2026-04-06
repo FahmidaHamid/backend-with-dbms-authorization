@@ -1,13 +1,25 @@
 # MongoDB Basics
 
-- MongoDB is a `NoSQL` database. Instead of storing data in tables with rows and columns like a traditional SQL database such as `MySQL`, **MongoDB** stores data as flexible, JSON-like "documents."
+- https://www.mongodb.com/docs/manual/
+
+- MongoDB is a document database designed to help developers build modern applications faster. It stores data in flexible, JSON-like documents, making it easy to model data the same way your application code uses it.
+
+- The flexible schema lets you evolve your data model without downtime, iterate quickly, and easily handle non-uniform data.
 
 ```json
 {
-  "name": "Alice",
-  "email": "alice@example.com",
-  "age": 25
+  _id: ObjectId("507f1f77bcf86cd799439011"),
+  name: "Alice",
+  birthdate: ISODate("1990-01-01T00:00:00Z"),
+  address: {
+    street: "123 Main St",
+    city: "Springfield",
+    state: "IL"
+  },
+  hobbies: ["reading", "hiking", "coding"]
 }
+
+
 ```
 
 - A group of these documents is called a “collection” (similar to a table).
