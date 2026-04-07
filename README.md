@@ -302,6 +302,12 @@ The provided code shows us a more structured way of defining the server side log
 graph LR;
 
 BACKEND-WITH-DBMS-AUTHORIZATION --> server.js;
-BACKEND-WITH-DBMS-AUTHORIZATION --> /routres;
+BACKEND-WITH-DBMS-AUTHORIZATION --> /routes;
+BACKEND-WITH-DBMS-AUTHORIZATION --> /utilities;
+
+/routes --> courseRoutes.js;
+/routes --> userRoutes.js;
+
+/utilities --> validations.js
 
 ```
