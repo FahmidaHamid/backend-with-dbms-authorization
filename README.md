@@ -311,3 +311,13 @@ BACKEND-WITH-DBMS-AUTHORIZATION --> /utilities;
 /utilities --> validations.js
 
 ```
+
+#### Run & Test:
+
+
+
+```javascript
+
+nodemon server.js
+
+```
