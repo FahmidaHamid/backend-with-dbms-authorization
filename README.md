@@ -299,9 +299,9 @@ The provided code shows us a more structured way of defining the server side log
 ### Project Structure
 
 ```mermaid
-graph TD;
+graph LR;
 
 BACKEND-WITH-DBMS-AUTHORIZATION --> server.js;
-
+BACKEND-WITH-DBMS-AUTHORIZATION --> /routres;
 
 ```
