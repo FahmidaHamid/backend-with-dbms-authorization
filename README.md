@@ -1,4 +1,6 @@
-# MongoDB Basics
+# Phase 01) Establishing Connection with MongoDB
+
+## MongoDB Basics
 
 - https://www.mongodb.com/docs/manual/
 
@@ -34,19 +36,21 @@
 
 - Atlas handles things like:
   - Creating and hosting your database
-  - Security and user accounts
-  - Backups
+  - Providing Security and user accounts
+  - Keeping Backups
   - Scaling when your app grows
   - Monitoring and performance
 
 - So the difference is:
-  - MongoDB = the database software itself
-  - MongoDB Atlas = an online service that runs MongoDB for us
+  - MongoDB => the database software itself
+  - MongoDB Atlas => an online service that runs MongoDB for us
 
 - For our **Node.js/Express CRUD server**, Atlas is usually the easiest choice because we can create a free database online and connect our app to it with a connection string like:
 
 ```javascript
+
 mongodb+srv://username:password@cluster.mongodb.net/myDatabase
+
 ```
 
 - Note:
@@ -69,19 +73,23 @@ mongodb+srv://username:password@cluster.mongodb.net/myDatabase
 
 - So Atlas replaces the local JSON array or local database file, but we still build the backend yourself in Express.
 
-# How to Use MongoDB
+## How to Setup \& Use MongoDB
 
 ### 1) Register for a MongoDB Atlas Account
 
 - Go to `https://cloud.mongodb.com/`
+
 - Navigate to the MongoDB Atlas registration page.
+
 - Sign up using your email address, or use your Google/GitHub account.
+
 - Accept the Terms of Service and Privacy Policy.
 
 ### 2) Create a Free Cluster (M0)
 
 - We will stick to the free tier. Once logged in, select the "Shared Tier" option (M0), which is free forever for small projects.
   - Choose a cloud provider (AWS, Google Cloud, or Azure) and a region close to you.
+
   - Name your cluster (e.g., "Cluster0") and click "Create Deployment".
 
 ### 3) Configure Database Security
@@ -89,10 +97,12 @@ mongodb+srv://username:password@cluster.mongodb.net/myDatabase
 - You will find **Security** [on the LeftSide Bar], click "Security QuickStart" and do the followings:
   - **Create a Database User:** (How would you like to authenticate your connection?)
     - Choose UserName and Password, provide the information, also save it in a local file (in case you forget), Choose "admin" role for the user.
+
     - Remember: You will be able to create more users later.
 
   - **Configure IP Access List:** (Where would you like to connect from?)
-    - Under the "Network Access" tab, click "Add IP Address". Click "Allow Access From Anywhere" (0.0.0.0/0) for ease of use, or select "Add Current IP Address" to only allow your current location.
+    - Under the "Network Access" tab, click "Add IP Address".
+    - Click "Allow Access From Anywhere" (0.0.0.0/0) for ease of use, or select "Add Current IP Address" to only allow your current location.
     - Or, Choose "MyLocal Environment"
 
 ### 4) Connect to Your Cluster
@@ -107,8 +117,9 @@ mongodb+srv://username:password@cluster.mongodb.net/myDatabase
   npm install mongodb
   ```
 
-- Then I will copy the code sample inside my `index.js` file (the one we wrote in last class). Note that `<db_username>` and `<db_password>` should be replaced with your username and password you created for the admin user during configuration.
-- You should later hide these sensitive information by putting them in .env files.
+- Then I will copy the code sample inside my `index.js` file (the one we wrote in last class). Note that `<db_username>` and `<db_password>` should be replaced with your `username` and `password` you created for the admin user during configuration.
+
+- You should later hide these sensitive information by putting them in `.env` files.
 
 ## What does my `index.js` file look like?
 
@@ -116,7 +127,8 @@ mongodb+srv://username:password@cluster.mongodb.net/myDatabase
 const express = require("express");
 
 const cors = require("cors"); // npm i cors
-// Cross-Origin Resource Sharing (CORS). // cors: It allows or restricts web browsers from requesting resources (API data) from your server on behalf of a different domain (origin)
+// Cross-Origin Resource Sharing (CORS).
+// cors: It allows or restricts web browsers from requesting resources (API data) from your server on behalf of a different domain (origin)
 
 const app = express();
 
@@ -151,8 +163,7 @@ async function run() {
     await client.connect();
 
     const db = client.db("basicBackendDBSpr2026"); // name of my database
-    const courseCollection = db.collection("coursesSpr2026");
-    //name of my collection
+    const courseCollection = db.collection("coursesSpr2026"); //name of my collection
 
     app.get("/api/courses", async (req, res) => {
       try {
@@ -280,3 +291,17 @@ app.listen(port, () => {
     - View (Frontend <React>)
     - Controller (Backend Logic <NodeJS, Express>)
 - You may also call it a MERN (MongoDB, Express, React, Node.js) stack
+
+# Phase 02) A Server with Multiple Routes and Accessting Multiple Collections from MongoDB Database
+
+The provided code shows us a more structured way of defining the server side logic.
+
+### Project Structure
+
+```mermaid
+graph TD;
+
+BACKEND-WITH-DBMS-AUTHORIZATION --> server.js;
+
+
+```
